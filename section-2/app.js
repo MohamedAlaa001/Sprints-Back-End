@@ -18,22 +18,29 @@ onload = () => {
 
 // Get User's Name
 const getUser = () => {
-  let person = prompt('Please enter your name...').trim();
+  let person = prompt('Please enter your name...');
 
-  while (person === '') {
-    person = prompt('Please enter your name...').trim();
+  while (person === null || person.trim() === '') {
+    person = prompt('Please enter your name...');
   }
 
-  return person;
+  return person.trim();
 };
 
 // Get User's Password
 const getPassword = () => {
-  let password = parseInt(prompt('Please enter your password...').trim(), 10);
+  let password = prompt('Please enter your password...');
   let count = 0;
 
+  if (password) password = parseInt(password.trim(), 10);
+
   while (isNaN(password) || password !== 123) {
-    password = parseInt(prompt('Please enter your password...').trim(), 10);
+    password = prompt('Please enter your password...');
+
+    if (password) password = parseInt(password.trim(), 10);
+
+    if (password === 123) return true;
+
     count++;
 
     if (count >= 2) {
@@ -46,13 +53,14 @@ const getPassword = () => {
 
 // Get User's birth month
 const getMonth = () => {
-  let month = parseInt(prompt('Please enter your birth month...').trim(), 10);
+  let month = prompt('Please enter your birth month...');
+
+  if (month) month = parseInt(month.trim(), 10);
 
   while (isNaN(month) || month < 1 || month > 12) {
-    month = parseInt(
-      prompt('Please enter a valid month (in numbers)...').trim(),
-      10
-    );
+    month = prompt('Please enter a valid month (in numbers)...');
+
+    if (month) month = parseInt(month.trim(), 10);
   }
 
   return month;
@@ -60,11 +68,14 @@ const getMonth = () => {
 
 // Get User's birth year
 const getYear = () => {
-  let year = parseInt(prompt('Please enter your birth year...').trim(), 10);
-  const currentYear = new Date();
+  let year = prompt('Please enter your birth year...');
 
-  while (isNaN(year) || year > currentYear.getFullYear()) {
-    year = parseInt(prompt('Please enter a valid birth year...').trim(), 10);
+  if (year) year = parseInt(year.trim(), 10);
+
+  while (isNaN(year) || year < 1900 || year > new Date().getFullYear()) {
+    year = prompt('Please enter a valid birth year...');
+
+    if (year) year = parseInt(year.trim(), 10);
   }
 
   return year;
@@ -83,10 +94,14 @@ const validateDay = (day, month, year) => {
 
 // Get User's birth day
 const getDay = (month, year) => {
-  let day = parseInt(prompt('Please enter your birth day...').trim(), 10);
+  let day = prompt('Please enter your birth day...');
+
+  if (day) day = parseInt(day.trim(), 10);
 
   while (!validateDay(day, month, year)) {
-    day = parseInt(prompt('Please enter a valid birth day...').trim(), 10);
+    day = prompt('Please enter a valid birth day...');
+
+    if (day) day = parseInt(day.trim(), 10);
   }
 
   return day;
@@ -141,5 +156,10 @@ const getHoroScope = (day, month) => {
 };
 
 const displayHoroScope = (day, month) => {
-  alert(`Your Horoscope is ${getHoroScope(day, month)}`);
+  const horoscope = getHoroScope(day, month);
+  document.getElementById('results').innerHTML = `
+      <h1 style="color: blue;">Your Horoscope is ${horoscope}</h1>
+    `;
+
+  alert(`Your Horoscope is ${horoscope}`);
 };
