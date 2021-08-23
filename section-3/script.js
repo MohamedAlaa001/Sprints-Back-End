@@ -59,9 +59,9 @@ const renderTable = function () {
         </td>
         <td>
         <button class="btn btn-primary btn-sm" onclick="editTask(this)">Edit</button>
-        <button class="btn btn-success btn-sm" style="display:none;">Save</button>
-        <button class="btn btn-danger btn-sm" style="display:none;">Cancel</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteTask(${i})">Delete</button></td>
+        <button class="btn btn-success btn-sm hide" onclick="saveTask(this)">Save</button>
+        <button class="btn btn-danger btn-sm hide" onclick="handleCancel()">Cancel</button>
+        <button class="btn btn-danger btn-sm " onclick="deleteTask(${i})">Delete</button></td>
         </tr>
         `;
     tbody.insertAdjacentHTML('beforeEnd', row);
@@ -80,16 +80,62 @@ const addTask = function () {
   }
 };
 
-const editTask = function (el) {
+const editTask = (el) => {
+  const parentElement = el.parentNode;
+  const rowElement = parentElement.parentNode.children;
+  document.getElementById('add').disabled = true;
+  Array.from(parentElement.children).map((el) => el.classList.toggle('hide'));
+  nameFieldToInput(rowElement[1]);
+  priorityToSelect(rowElement[2]);
+};
+
+const saveTask = (el) => {
   const parentElement = el.parentNode;
   const rowElement = parentElement.parentNode.children;
 
-  changeNameField(rowElement[1]);
+  if (nameFieldToText(rowElement[1]).trim() === '') {
+    return alert('Opps...You have to enter a valid name!');
+  }
+
+  const index = Number(rowElement[0].innerHTML) - 1;
+  tasks[index] = {
+    name: nameFieldToText(rowElement[1]).trim(),
+    priority: priorityToText(rowElement[2]),
+  };
+
+  Array.from(parentElement.children).map((el) => el.classList.toggle('hide'));
+  document.getElementById('add').disabled = false;
+  renderTable();
 };
 
-const changeNameField = (el) => {
-  const nameField = el;
-  nameField.innerHTML = `<input type="text" value=${nameField.innerHTML} />`;
+const nameFieldToInput = (el) => {
+  el.innerHTML = `<input type="text" value=${el.innerHTML} />`;
 };
 
+// Return the text value from the input
+const nameFieldToText = (el) => el.childNodes[0].value;
+
+const priorityToSelect = (el) => {
+  const objValues = {
+    High: 1,
+    Medium: 2,
+    Low: 3,
+  };
+
+  const selectValue = objValues[`${el.innerHTML}`];
+
+  el.innerHTML = `
+  <select>
+    <option value="1" ${selectValue === 1 && 'selected'}>High</option>
+    <option value="2" ${selectValue === 2 && 'selected'}>Medium</option>
+    <option value="3" ${selectValue === 3 && 'selected'}>Low</option>
+  </select>`;
+};
+
+const priorityToText = (el) => el.childNodes[1].value;
+
+const handleCancel = () => {
+  document.getElementById('add').disabled = false;
+  renderTable();
+};
 document.querySelector('#add').addEventListener('click', addTask);
