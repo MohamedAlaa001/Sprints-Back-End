@@ -2,6 +2,7 @@
 
 var pusher;
 var timerCounter;
+var updateTimer;
 // pusher.sendMessage();
 // pusher.unSubscribe();
 
@@ -28,9 +29,17 @@ const login = (e) => {
   document.getElementById('login-page').style.display = 'none';
   document.getElementById('chat-window').style.display = 'flex';
   pusher.getChannelInfo();
+  updateTimer = setInterval(
+    (obj) => {
+      obj.getChannelInfo();
+    },
+    20000,
+    pusher
+  );
 };
 
 const logout = () => {
+  clearInterval(updateTimer);
   pusher.unSubscribe();
 };
 
