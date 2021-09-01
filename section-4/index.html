@@ -49,18 +49,16 @@
         <!-- Chat Header -->
         <h2 class="header">
           <div class="d-flex justify-content-between align-items-center">
-            <div class="title">Group name: Online Users (4)</div>
+            <div class="title">
+              Group name: Online Users (<span id="users-count">0</span>)
+            </div>
             <button class="btn btn-outline-danger" onclick="logout()">
               Logout
             </button>
           </div>
         </h2>
         <!-- Chat Window -->
-        <div class="chat-box">
-          <div class="chat-item">User 1: Message from user 1</div>
-          <div class="chat-item">User 2: Message from user 2</div>
-          <div class="chat-item user">You: Your message</div>
-        </div>
+        <div class="chat-box"></div>
         <!-- Chat Form -->
         <form class="chat-form my-3" onsubmit="sendMessage(event)">
           <div class="row">
@@ -83,13 +81,18 @@
           </div>
         </form>
         <!-- Chat Timer -->
-        <div class="chat-idle-timer">You will logout after (00:21)</div>
+        <div class="chat-idle-timer">
+          You will logout after <span id="timer"></span>
+        </div>
       </div>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    <script src="./app.js"></script>
-    <script src="./pusher.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
+    <script type="" src="./pusher.js"></script>
+    <script type="" src="./app.js"></script>
   </body>
 </html>
